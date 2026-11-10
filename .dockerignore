@@ -1,0 +1,6 @@
+.git
+.artifacts
+**/bin
+**/obj
+tests
+**/data

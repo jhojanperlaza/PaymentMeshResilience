@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/SolidarityGrid/SolidarityGrid.csproj" />
+  <Project Path="tests/SolidarityGrid.Tests/SolidarityGrid.Tests.csproj" />
+</Solution>

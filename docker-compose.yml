@@ -1,0 +1,62 @@
+name: solidarity-grid
+
+x-node: &node
+  image: solidarity-grid:step04
+  pull_policy: never
+  restart: "no"
+  networks: [mesh, api]
+  healthcheck:
+    test: ["CMD", "dotnet", "SolidarityGrid.dll", "--healthcheck"]
+    interval: 10s
+    timeout: 6s
+    retries: 3
+    start_period: 20s
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  node-a:
+    <<: *node
+    build: .
+    environment:
+      Grid__NodeId: node-a
+      Grid__DataPath: /data
+    ports: ["127.0.0.1:5001:8080"]
+    volumes: ["node-a-payments-v3:/data"]
+  node-b:
+    <<: *node
+    environment:
+      Grid__NodeId: node-b
+      Grid__DataPath: /data
+    ports: ["127.0.0.1:5002:8080"]
+    volumes: ["node-b-payments-v3:/data"]
+  node-c:
+    <<: *node
+    environment:
+      Grid__NodeId: node-c
+      Grid__DataPath: /data
+    ports: ["127.0.0.1:5003:8080"]
+    volumes: ["node-c-payments-v3:/data"]
+
+networks:
+  mesh:
+    internal: true
+  api:
+    driver: bridge
+
+volumes:
+  node-a-data:
+  node-b-data:
+  node-c-data:
+  node-a-payments-v1:
+  node-b-payments-v1:
+  node-c-payments-v1:
+  node-a-payments-v2:
+  node-b-payments-v2:
+  node-c-payments-v2:
+  node-a-payments-v3:
+  node-b-payments-v3:
+  node-c-payments-v3:
